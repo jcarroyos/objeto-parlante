@@ -1,11 +1,16 @@
 import os
 import uuid
+import datetime
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
 from elevenlabs import VoiceSettings
 
 load_dotenv()
+
+# Asegurar que existe el directorio para las respuestas
+RESPUESTAS_DIR = os.path.join("audio", "respuestas")
+os.makedirs(RESPUESTAS_DIR, exist_ok=True)
 
 client = ElevenLabs(
   api_key=os.getenv("ELEVENLABS_API_KEY"),
@@ -28,8 +33,12 @@ def text_to_speech_file(text: str) -> str:
         ),
     )
 
-    # Generar un nombre de archivo único
-    save_file_path = f"{uuid.uuid4()}.mp3"
+    # Generar un timestamp para el nombre del archivo
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{timestamp}_{uuid.uuid4()}.mp3"
+    
+    # Ruta completa al archivo en la carpeta de respuestas
+    save_file_path = os.path.join(RESPUESTAS_DIR, filename)
 
     # Escribir el audio en un archivo
     with open(save_file_path, "wb") as f:
