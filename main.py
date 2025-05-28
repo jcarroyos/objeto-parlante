@@ -15,7 +15,7 @@ load_dotenv()
 
 def procesar_texto(texto_entrada):
     """
-    Procesa el texto de entrada usando la API de DeepSeek y devuelve la respuesta.
+    Procesa el texto de entrada usando la API de OpenAI y devuelve la respuesta.
     
     Args:
         texto_entrada (str): Texto de entrada para el asistente.
@@ -23,10 +23,10 @@ def procesar_texto(texto_entrada):
     Returns:
         str: Respuesta generada por el asistente.
     """
-    client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com")
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     
     response = client.chat.completions.create(
-        model="deepseek-chat",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Tu eres un Santa Claus que cambia versos por pesos, cuando me saludes hazme saber que me quieres vender un verso, y a contunuación haz una rima navideña de humor negro, inspirada en cuentos de terror de navidada. La respuesta no debe ser mayor a 50 palabras, no incluir emojis ni caracteres especiales."},
             {"role": "user", "content": texto_entrada},
@@ -67,8 +67,8 @@ def main():
                 
             print(f"\nTexto transcrito: '{texto_entrada}'")
         
-        # Procesar el texto con DeepSeek
-        print("\nProcesando con DeepSeek...")
+        # Procesar el texto con OpenAI
+        print("\nProcesando con OpenAI...")
         respuesta = procesar_texto(texto_entrada)
         print("\nRespuesta del asistente:")
         print(respuesta)
@@ -86,7 +86,7 @@ def main():
     
     except Exception as e:
         print(f"\nError: {e}")
-        print("Verifica que tienes las claves de API correctas en el archivo .env y que los paquetes necesarios están instalados.")
+        print("Verifica que tienes las claves de API de OpenAI y ElevenLabs correctas en el archivo .env y que los paquetes necesarios están instalados.")
         print("Puedes ejecutar: pip install -r requirements.txt")
         
         # Sugerencias de solución de problemas
